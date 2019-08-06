@@ -74,6 +74,10 @@ void contador(){
     }
 }
 void horizontal( struct Empire_State *V1){
+    int x,y;
     srand(time(NULL));
-    numero = rand() % (3+1);    
+    x = rand() % (nu+1);
+    y = rand() % (nu+1);
+
+    
 }

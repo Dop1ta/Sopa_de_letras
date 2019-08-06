@@ -12,14 +12,14 @@ char M[n][n] = {0}; //matriz
 int nu; //nxn
 int k; //cantidad de palabras
 
-struct Empire_State{ //alamacena las palabras
+struct Empire_State{ //alamacena las palabras (vector de estructura)
     char palabras[20];
 };
 
-void horizontal( struct Empire_State *V1);
-void vertical( struct Empire_State *V1);
-void Diagonal_1( struct Empire_State *V1);
-void Diagonal_2( struct Empire_State *V1);
+void horizontal( struct Empire_State V1);
+void vertical( struct Empire_State V1);
+void Diagonal_1( struct Empire_State V1);
+void Diagonal_2( struct Empire_State V1);
 
 void contador(struct Empire_State);   
 
@@ -34,7 +34,6 @@ int main(){
 
     system("cls");
 
-    void horizontal(&V);
 
     return 0;
 }
@@ -73,11 +72,22 @@ void contador(){
         Diagonal_2();
     }
 }
-void horizontal( struct Empire_State *V1){
+void horizontal( struct Empire_State V1 ){
     int x,y;
+    int contador;
     srand(time(NULL));
     x = rand() % (nu+1);
     y = rand() % (nu+1);
 
-    
+    while( y<=nu ){
+        y++;
+    }
+    if( nu-y>= ){
+         
+    }
+    y=0;
+    while( y<=0){
+        y--;
+    }
+    if(  )
 }

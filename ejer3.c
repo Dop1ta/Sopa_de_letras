@@ -185,8 +185,8 @@ void Diagonal_1( struct Empire_State V1 ){
                 save[contador] += x;
             }
         }
-        if( (y-con1)>(strlen(V1[v2]->palabras)-1) ){ //diagonal izquierda alreves
-            for( i=(y-con1),j=(x-con1) ; i<con1 ; i--,j--){
+        if( (y-con1)>=(strlen(V1[v2]->palabras)-1) ){ //diagonal izquierda alreves
+            for( i=(y-con1),j=(x-con1) ; i>=0 ; i--,j--){
                 if(M[i][j]==0){
                     M[i][j]==V1[v2]->palabras;
                 }

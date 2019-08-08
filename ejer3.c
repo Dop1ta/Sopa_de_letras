@@ -2,7 +2,7 @@
 #include<time.h>
 #include<stdio.h>
 #include<windows.h>
-#include<string.h>
+#include <string.h>
 
 #define n 100
 
@@ -14,19 +14,21 @@ char Palabras[n][n]; //guarda las palabras
 int tam[n];//tamaño de las palabras
 int nu; //nxn
 int k; //cantidad de palabras
-float save[20]; //guarda las coordenadas de las palabras //////////////////////////revisar
 int contador1=0;
-int v2=0;
 int v3;
+int tmx[10],tmy[10];
 
 void contador();
 void horizontal();
 void vertical();
-void Diagonal_1();
-void Diagonal_2();
+void Diagonal();
  
-
 int main(){
+    int co2=0;
+    int time0;
+    int time1;
+    int fallos=0;
+    int correcto=0;
     int numero;
     char pal[20];
     srand(time(NULL));
@@ -39,18 +41,11 @@ int main(){
             Palabras[i][j]= pal[j];
         }
     }
-    for( int o=0 ; o<k ; o++ ){
-        for( int m=0 ; m<n ; m++ ){
-            printf("%c",Palabras[o][m]);
-        }
-        printf("\n");
-    }    
 
     contador();
 
     for( v3=0 ; v3<k ; v3++){   
-        numero = rand() % (3+1);
-        printf("%d\n",numero);
+        numero = rand() % (2+1);
         if( numero==0 ){ //horizontal
             horizontal();
         }
@@ -58,16 +53,47 @@ int main(){
             vertical();
         }
         if( numero==2 ){ //primera diagonal
-            Diagonal_1();
-        }
-        if( numero==3 ){//segunda diagonal
-            Diagonal_2();
+            Diagonal();
         }
     }
-    //system("cls");
 
-    
+    system("cls");
+
+    for( int i=0 ; i<nu ; i++){
+        for( int j=0 ; j<nu ; j++){
+            printf("[%c]",M[i][j]);
+        }
+        printf("\n");
+    }
+    time0 = time(NULL);
+    do{
+        printf("\ningrese la palabra\n");
+        scanf("%s",&pal);
+
+        co2=0;
+
+        for( int i=0 ; i<k ; i++){
+            if( strlen(pal)==tam[i] ){
+                printf("correcto\n");
+                correcto++;
+                co2++;
+                printf("%d,%d\n",tmx[i],tmy[i]);
+            }
+        }
+        if( co2==0 ){
+            fallos++;
+        }
+        if( fallos>3 ){
+            time1=time(NULL);
+            printf("perdiste!!!!\n%d",time1-time0);         
+            return 0;
+        }    
+    }while( correcto<k );
+    time1=time(NULL);
+    printf("\nGanaste\n%d",time1-time0);
+
     return 0;
+
 }
 
 void Datos(){// pide los valores de las variables globales
@@ -84,7 +110,7 @@ void Aleatorio(){ //se encarga de regenar la matriz hasta el nxn = nu, ingresado
     int i,j;
     for( i=0 ; i<nu ; i++){
         for( j=0 ; j<nu ; j++ ){
-            M[i][j]=  'a' + rand() % (('z' - 'a') + 1);
+            M[i][j]=  (rand()%26)+97;
         }
     }
 }
@@ -98,179 +124,105 @@ void contador(){
 }
 void horizontal(){
     int ss;
-    int con1=0; //cuenta las palabras hacia adelante
-    int i,j; //indices del for
+    int con1; //cuenta las palabras hacia adelante
     int x,y; // coordenadas de la palabra 
     while( 1 ){
-      x = rand() % (nu+1);   //tamaño x de nu que es de la matriz 
-      y = rand() % (nu+1);   //tamaño y de nu que es de la matriz
-      printf("%d %d\n",x,y);  
+      x = rand() % nu;   //tamaño x de nu que es de la matriz 
+      y = rand() % nu;   //tamaño y de nu que es de la matriz
+      con1=0;
         while( y<nu ){ //verifica el tamaño de la parte de la matriz
             y++;
             con1++;
         }
-            if( con1>=tam[v2] ){
-                v2++;
+            if( con1>=tam[v3] ){
                 ss=0;
-                for( int i=(y-con1-1) ; i<nu ; i++){
-                    if(M[x][i]==0){
+                tmx[v3]=x;
+                tmy[v3]=(y-con1);
+                for( int i=(y-con1) ; Palabras[v3][ss]!='\0' ; i++){
                         M[x][i]=Palabras[v3][ss];
-                        printf("%c",Palabras[v3][ss]);
-                    }
                     ss++;
                 }
-                contador1++;
-                save[contador1] = y/10;
-                save[contador1] += x;
                 break;    
             }  
-        if( (y-con1)>=tam[v2] ){
-            v2++;
+        if( (nu-con1)>=tam[v3] ){
             ss=0;
-            for( int j=(y-con1) ; j>-1 ; j--){
-                if(M[x][j]==0 ){
+            tmx[v3]=x;
+            tmy[v3]=(y-con1);
+            for( int j=(y-con1) ; Palabras[v3][ss]!='\0' ; j--){
                     M[x][j]=Palabras[v3][ss];
-                    printf("%c",Palabras[v3][ss]);
-                }
                 ss++;
             }
-            contador1++;
-            save[contador1] = y/10;
-            save[contador1] += x;
             break;
         }
     }
-}// revisar condiciones de entrada a las variables de posicion
+}
 void vertical(){
     int ss; 
     int con2;
-    int i,j; //indices del for
     int x,y; // coordenadas de la palabra 
-    while( i<nu || j<nu ){
-      x = rand() % (nu+1);   //tamaño x de nu que es de la matriz 
-      y = rand() % (nu+1);   //tamaño y de nu que es de la matriz
-      printf("%d %d\n",x,y);  
+    while( 1 ){
+      x = rand() % nu;   //tamaño x de nu que es de la matriz 
+      y = rand() % nu;   //tamaño y de nu que es de la matriz
+      con2=0; 
         while( x<nu ){
             x++;
             con2++;
         }
-            if( con2>=tam[v2] ){
-                v2++;
-                for( int i=(x-con2) ; i<nu ; i++){
-                    if(M[i][y]==0){
+            if( con2>=tam[v3] ){
+                ss=0;
+                tmx[v3]=(x-con2);
+                tmy[v3]=(y);
+                for( int i=(x-con2) ; Palabras[v3][ss]!='\0' ; i++){
                         M[i][y]=Palabras[v3][ss];
-                        printf("%c",Palabras[v3][ss]);
-                    }
                     ss++;
                 }
-                contador1++;
-                save[contador1] = y/10;
-                save[contador1] += x;
                 break;
             }  
-        if( (x-con2)>=tam[v2] ){
-            v2++;
-            for( int j=x ; j>-1 ; j--){
-                if(M[j][y]==0 ){
+        if( (nu-con2)>=tam[v3] ){
+            tmx[v3]=(x-con2);
+            tmy[v3]=(y);            
+            ss=0;
+            for( int j=(x-con2) ; Palabras[v3][ss]!='\0' ; j--){
                     M[j][y]=Palabras[v3][ss];
-                    printf("%c",Palabras[v3][ss]);
-                }
                 ss++;
             }
-            contador1++;
-            save[contador1] = y/10;
-            save[contador1] += x;
             break;
         }
     }
 }
-void Diagonal_1(){
+void Diagonal(){
     int ss;
-    v2++;
-    int con1=0;
-    int i,j; //indices del for
+    int con1;
+    int j;
     int x,y; // coordenadas de la palabra 
     while( 1 ){
-        x = rand() % (nu+1);   //tamaño x de nu que es de la matriz 
-        y = rand() % (nu+1);   //tamaño y de nu que es de la matriz
-        printf("%d %d\n",x,y);
-        while( y<nu ){
+        x = rand() % nu;   //tamaño x de nu que es de la matriz 
+        y = rand() % nu;   //tamaño y de nu que es de la matriz
+        con1=0;
+        while( x<=nu ){
             y++;
             x++;
             con1++;
         }
-        if( con1>=tam[v2] ){ //diagonal izquierda normal
-        v2++;
-            for( i=(y-con1),j=(x-con1) ; i<con1 ; i++,j++){
-                if(M[i][j]==0){
-                    M[i][j]==Palabras[v3][ss];
-                    printf("%c",Palabras[v3][ss]);
-                }
+        if( con1>=tam[v3] ){ //diagonal izquierda normal
+            ss=0;
+            tmx[v3]=(x-con1);
+            tmy[v3]=(y-con1);
+            for( int i=(y-con1),j=(x-con1) ; Palabras[v3][ss]!='\0' ; i++,j++){
+                    M[j][i]=Palabras[v3][ss];
                 ss++;
             }
-            contador1++;
-            save[contador1] = y/10;
-            save[contador1] += x;
             break;
         }
-        if( (y-con1)>=tam[v2] ){ //diagonal izquierda alreves
-        v2++;
-            for( i=(y-con1),j=(x-con1) ; j>=0 ; i--,j--){
-                if(M[i][j]==0){
-                    M[i][j]==Palabras[v3][ss];
-                    printf("%c",Palabras[v3][ss]);
-                }
+        if( (x-con1)>=tam[v3] ){ //diagonal izquierda alreves
+            ss=0;
+            tmx[v3]=(x-con1);
+            tmy[v3]=(y-con1);
+            for( int i=(y-con1), j=(x-con1) ; Palabras[v3][ss]!='\0' ; i--,j--){
+                    M[j][i]=Palabras[v3][ss];
                 ss++;
             }
-            contador1++;
-            save[contador1] = y/10;
-            save[contador1] += x;
             break;            
-        }
-    }
-}
-void Diagonal_2(){
-    int ss;
-    v2++;
-    int con1=0;
-    int i,j; //indices del for
-    int x,y; // coordenadas de la palabra 
-    while( 1 ){
-        x = rand() % (nu+1);   //tamaño x de nu que es de la matriz 
-        y = rand() % (nu+1);   //tamaño y de nu que es de la matriz
-        printf("%d %d\n",x,y);
-        while(y<nu){
-            y++;
-            x++;
-            con1++;
-        }
-        if( con1>=tam[v2] ){ //diagonal izquierda normal
-        v2++;
-            for( i=(y-con1),j=(x-con1) ; i<con1 ; i--,j++){
-                if(M[i][j]==0){
-                    M[i][j]==Palabras[v3][ss];
-                    printf("%c",Palabras[v3][ss]);
-                }
-                ss++;
-            }
-            contador1++;
-            save[contador1] = y/10;
-            save[contador1] += x;
-            break;
-        }
-        if( (y-con1)>=tam[v2] ){ //diagonal izquierda alreves
-        v2++;
-            for( i=(y-con1),j=(x-con1) ; i<nu ; i++,j--){
-                if(M[i][j]==0){
-                    M[i][j]==Palabras[v3][n];
-                    printf("%c",Palabras[v3][n]);
-                }
-                ss++;
-            }
-            contador1++;
-            save[contador1] = y/10;
-            save[contador1] += x;            
-            break;
         }
     }
 }

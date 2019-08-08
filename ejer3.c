@@ -57,7 +57,7 @@ int main(){
         }
     }
 
-    system("cls");
+    system("cls"); 
 
     for( int i=0 ; i<nu ; i++){
         for( int j=0 ; j<nu ; j++){
@@ -73,7 +73,7 @@ int main(){
         co2=0;
 
         for( int i=0 ; i<k ; i++){
-            if( strlen(pal)==tam[i] ){
+            if( strlen(pal)==tam[i] && M[tmx[i]][tmy[i]]==Palabras[i][0] ){
                 printf("correcto\n");
                 correcto++;
                 co2++;

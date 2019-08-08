@@ -93,7 +93,6 @@ int main(){
     printf("\nGanaste\n%d",time1-time0);
 
     return 0;
-
 }
 
 void Datos(){// pide los valores de las variables globales
